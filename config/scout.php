@@ -1,5 +1,9 @@
 <?php
 
+use App\Models\PrimaryDatabase\City;
+use App\Models\PrimaryDatabase\Product;
+use App\Models\PrimaryDatabase\Tag;
+
 return [
 
     /*
@@ -137,9 +141,28 @@ return [
         'host' => env('MEILISEARCH_HOST', 'http://localhost:7700'),
         'key' => env('MEILISEARCH_KEY'),
         'index-settings' => [
-            // 'users' => [
-            //     'filterableAttributes'=> ['id', 'name', 'email'],
-            // ],
+            Product::class => [
+                'searchableAttributes'=> [
+                    Product::SKU,
+                    Product::DESCRIPTION,
+                ],
+                'filterableAttributes'=> [
+                    Product::SIZE_ID,
+                ],
+                'sortableAttributes' => [Product::CREATED_AT],
+            ],
+            City::class => [
+                'searchableAttributes'=> [
+                    City::NAME,
+                ],
+                'sortableAttributes' => [City::CREATED_AT],
+            ],
+            Tag::class => [
+                'searchableAttributes'=> [
+                    Tag::TITLE,
+                ],
+                'sortableAttributes' => [Tag::CREATED_AT],
+            ],
         ],
     ],
 

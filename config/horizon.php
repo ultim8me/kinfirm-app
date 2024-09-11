@@ -1,5 +1,8 @@
 <?php
 
+use App\Constants\DatabaseConnections;
+use App\Constants\Environments;
+use App\Constants\Queues;
 use Illuminate\Support\Str;
 
 return [
@@ -181,8 +184,27 @@ return [
 
     'defaults' => [
         'supervisor-1' => [
-            'connection' => 'redis',
-            'queue' => ['default'],
+            'connection' => DatabaseConnections::CACHE_CONNECTION_NAME,
+            'queue' => [
+                Queues::STOCK,
+                Queues::PRODUCTS,
+                Queues::DEFAULT
+            ],
+            'balance' => 'auto',
+            'autoScalingStrategy' => 'time',
+            'maxProcesses' => 1,
+            'maxTime' => 0,
+            'maxJobs' => 0,
+            'memory' => 128,
+            'tries' => 1,
+            'timeout' => 60,
+            'nice' => 0,
+        ],
+        'supervisor-2' => [
+            'connection' => DatabaseConnections::CACHE_CONNECTION_NAME,
+            'queue' => [
+                Queues::INDEX,
+            ],
             'balance' => 'auto',
             'autoScalingStrategy' => 'time',
             'maxProcesses' => 1,
@@ -196,16 +218,24 @@ return [
     ],
 
     'environments' => [
-        'production' => [
+        Environments::PRODUCTION => [
             'supervisor-1' => [
+                'maxProcesses' => 10,
+                'balanceMaxShift' => 1,
+                'balanceCooldown' => 3,
+            ],
+            'supervisor-2' => [
                 'maxProcesses' => 10,
                 'balanceMaxShift' => 1,
                 'balanceCooldown' => 3,
             ],
         ],
 
-        'local' => [
+        Environments::LOCAL => [
             'supervisor-1' => [
+                'maxProcesses' => 3,
+            ],
+            'supervisor-2' => [
                 'maxProcesses' => 3,
             ],
         ],

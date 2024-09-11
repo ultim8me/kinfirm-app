@@ -1,5 +1,6 @@
 <?php
 
+use App\Constants\DatabaseConnections;
 use Illuminate\Support\Str;
 
 return [
@@ -15,7 +16,7 @@ return [
     |
     */
 
-    'default' => env('CACHE_DRIVER', 'file'),
+    'default' => env('CACHE_DRIVER', DatabaseConnections::CACHE_CONNECTION_NAME),
 
     /*
     |--------------------------------------------------------------------------

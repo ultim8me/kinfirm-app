@@ -1,7 +1,15 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\{
+    AuthController,
+    CityController,
+    ProductController,
+    SearchController,
+    TagController,
+    SizeController,
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +22,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('auth')->controller(AuthController::class)->group(function () {
+    Route::post('login', 'login')->name('auth.login');
+    Route::post('register', 'register')->name('auth.register');
+    Route::post('logout', 'logout')->name('auth.logout')->middleware('auth:api');
+    Route::get('user', 'user')->name('auth.user')->middleware('auth:api');
+});
+
+Route::middleware('auth:api')->group(function () {
+    Route::apiResource('products', ProductController::class)->only(['index', 'show']);
+    Route::get('tags/popular', [TagController::class, 'popular'])->name('tags.popular');
+    Route::apiResource('tags', TagController::class)->only(['index']);
+    Route::apiResource('cities', CityController::class)->only('index');
+    Route::apiResource('sizes', SizeController::class)->only('index');
+
+    Route::prefix('search')->controller(SearchController::class)->group(function () {
+        Route::get('global', 'global')->name('search.global');
+        Route::get('product', 'product')->name('search.product');
+    });
 });
