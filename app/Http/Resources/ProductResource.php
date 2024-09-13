@@ -20,6 +20,7 @@ class ProductResource extends BaseResource
             'sku' => $this->sku,
             'photo_url' => $this->photo_url,
             'description' => $this->description,
+            ...$this->getRelatedResources(),
             ...$this->getTimestamps(),
         ];
     }

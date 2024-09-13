@@ -18,6 +18,7 @@ class CityResource extends BaseResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            ...$this->getRelatedResources(),
             ...$this->getTimestamps(),
         ];
     }

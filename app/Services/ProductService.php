@@ -78,7 +78,7 @@ class ProductService
     {
         try {
 
-            $products = ProductResource::collection((new Product)->paginate());
+            $products = ProductResource::collection((new Product)->withOnly(['size', 'tags'])->paginate(12));
 
             if ($products->isEmpty()) {
                 return FetchMethodResponse::notFound();

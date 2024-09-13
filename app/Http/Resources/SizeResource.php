@@ -19,6 +19,7 @@ class SizeResource extends BaseResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
+            ...$this->getRelatedResources(),
             ...$this->getTimestamps(),
         ];
     }

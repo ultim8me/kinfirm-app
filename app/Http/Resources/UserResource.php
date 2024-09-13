@@ -22,6 +22,7 @@ class UserResource extends BaseResource
             'access_token' => $this->when($this->access_token && str_contains($request->getUri(), 'auth'), function () {
                 return $this->access_token;
             }),
+            ...$this->getRelatedResources(),
             ...$this->getTimestamps(),
         ];
     }

@@ -19,6 +19,7 @@ class TagResource extends BaseResource
             'id' => $this->id,
             'title' => $this->title,
             'products_count' => $this->whenNotNull($this->products_count),
+            ...$this->getRelatedResources(),
             ...$this->getTimestamps(),
         ];
     }
